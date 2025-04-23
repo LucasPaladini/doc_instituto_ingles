@@ -1,0 +1,72 @@
+@startuml
+
+class Persona {
+  +nombre: string
+  +apellido: str
+  +nacimiento: date
+  +telefono: int
+  +direccion: str
+  +dni: int
+}
+
+class Alumno {
+  +hereda
+  +pagar_cuota()
+  +registrar_alumno()
+  +modificar_alumno()
+  +eliminar_alumno()
+}
+
+class Inscripcion {
+  +alumno: persona
+  +curso: curso
+  +fecha_inscripcion: date
+  +inscribir_alumno()
+  +cancelar_inscripcion()
+}
+
+class Asistencia {
+  +alumno: persona
+  +curso: curso
+  +fecha: date
+  +presente: bool
+  +registrar_asistencia()
+  +obtener_reporte()
+}
+
+class Curso {
+  +nombre: str
+  +salon: str
+  +horario: str
+  +agregar_curso()
+  +modificar_curso()
+  +eliminar_curso()
+}
+
+class Pago {
+  +alumno: persona
+  +valor: int
+  +fecha_pago: date
+  +medio_pago: str
+  +periodo: date
+  +registrar_pago()
+  +generar_recibo()
+  +agregar_medio_pago()
+}
+
+class Profesor {
+  +agregar_asistencia()
+  +modificar_asistencia()
+  +eliminar_asistencia()
+}
+
+Persona "1" <|-- Alumno
+Alumno "1" o-- "1..*" Inscripcion
+Inscripcion "1" o-- "1" Curso
+Asistencia "1" o-- "1" Alumno
+Asistencia "1" o-- "1" Curso
+Pago "1" <|-- Alumno
+Profesor "1..*" -- "1" Asistencia
+
+@enduml
+
