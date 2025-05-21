@@ -1,20 +1,20 @@
 @startuml
+left to right direction
 
 class Persona {
-  +nombre: string
+  +nombre: str
   +apellido: str
   +nacimiento: date
   +telefono: int
   +direccion: str
   +dni: int
+  +obtener_datos()
 }
 
 class Alumno {
-  +hereda
   +pagar_cuota()
   +registrar_alumno()
   +modificar_alumno()
-  +eliminar_alumno()
 }
 
 class Inscripcion {
@@ -23,6 +23,7 @@ class Inscripcion {
   +fecha_inscripcion: date
   +inscribir_alumno()
   +cancelar_inscripcion()
+  +marcar_inactivo_alumno()
 }
 
 class Asistencia {
@@ -31,11 +32,12 @@ class Asistencia {
   +fecha: date
   +presente: bool
   +registrar_asistencia()
+  +eliminar_asistencia()
   +obtener_reporte()
 }
 
 class Curso {
-  +nombre: str
+  +nombre: st|r
   +salon: str
   +horario: str
   +agregar_curso()
@@ -55,12 +57,13 @@ class Pago {
 }
 
 class Profesor {
-  +agregar_asistencia()
   +modificar_asistencia()
-  +eliminar_asistencia()
+  +agregar_profesor()
+ 
 }
 
 Persona "1" <|-- Alumno
+Persona "1" <|-- Profesor
 Alumno "1" o-- "1..*" Inscripcion
 Inscripcion "1" o-- "1" Curso
 Asistencia "1" o-- "1" Alumno
@@ -69,4 +72,3 @@ Pago "1" <|-- Alumno
 Profesor "1..*" -- "1" Asistencia
 
 @enduml
-
