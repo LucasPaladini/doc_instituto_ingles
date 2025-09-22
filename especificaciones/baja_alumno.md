@@ -18,7 +18,6 @@ Se permite al Administrador del Sistema dar de baja un alumno.
 ### Flujo Normal
 
 1. El sistema muestra una pantalla con los datos de los alumnos ya precargados, que coincidan con el filtrado.  
-   - El usuario puede cancelar en cualquier momento.
 
 2. El Administrador hace clic en el ícono del cesto de basura junto a los datos. Luego da clic en **Aceptar**.
 
@@ -29,8 +28,8 @@ Se permite al Administrador del Sistema dar de baja un alumno.
 5. El sistema marca como **inactivo** al alumno.
 
 ### Flujo Alternativo
-
-- **4.2** El Administrador hace clic en **Cancelar** y vuelve al paso 1.
+- **X.1** El usuario puede cancelar en cualquier momento.
+- **4.1** El Administrador hace clic en **Cancelar** y vuelve al paso 1.
 
 ## 6. Postcondiciones
 El alumno es marcado como inactivo en el sistema.
