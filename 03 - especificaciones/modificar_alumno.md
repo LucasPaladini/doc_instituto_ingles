@@ -16,7 +16,7 @@ Se permite al Administrador del Sistema modificar un alumno.
 
 ### Flujo Normal
 
-1. Seleccionar al alumno que se quiere modificar.
+1. El administrador debe seleccionar al alumno que se quiere modificar.
 
 2. El sistema muestra una pantalla con los datos del alumno a modificar ya precargados.
 
