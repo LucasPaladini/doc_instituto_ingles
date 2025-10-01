@@ -9,7 +9,7 @@ Permite al Administrador del Sistema añadir un nuevo alumno al sistema. El Admi
 ## 4. Precondiciones
 - El Administrador debe estar autenticado en el sistema.
 - El sistema debe estar funcionando correctamente.
-- Debe seleccionar "Alumnos" y luego en "Añadir nuevo alumno".
+- Debe seleccionar "Alumnos".
 
 ## 5. Flujo de Eventos
 
