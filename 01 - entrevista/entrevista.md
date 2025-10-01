@@ -1,10 +1,10 @@
 # Entrevista
 
-Antes de comenzar con la entrevista, les consulté si podía grabar la entrevista para luego tener en cuenta toda la información solicitada.
+Antes de comenzar con la entrevista, consulté si podía grabarla con el fin de contar con toda la información solicitada para su posterior análisis.
 
-Presentarse ante el entrevistado y mencionarle que soy estudiante del Instituto Superior Juan Pablo II y que estoy cursando el segundo año de la carrera de Desarrollo de Software.  
+Luego, me presenté ante el entrevistado, mencionando que soy estudiante del Instituto Superior Juan Pablo II y que actualmente curso el segundo año de la carrera de Desarrollo de Software.
 
-Además, mencionarle que en segundo año recién comienzo a hacer el análisis del sistema a desarrollar, planificar y documentar, y que recién el año próximo se comienza a desarrollar el software en sí.  
+También le expliqué que en este segundo año comenzamos con la etapa de análisis del sistema a desarrollar, lo que implica planificar y documentar cada parte del proyecto. El desarrollo del software propiamente dicho se llevará a cabo recién el próximo año.
 
-El proceso de desarrollo es extenso, incluso es posible que esta entrevista no sea la única, ya que a medida que se vaya avanzando será necesario realizar otras entrevistas o hasta incluso puede que, a medida que algún módulo del sistema esté listo, se le entregue para que sea testeado por el cliente.  
+Asimismo, aclaré que el proceso de desarrollo es extenso y que esta entrevista podría no ser la única. A medida que el proyecto avance, será necesario realizar nuevas entrevistas y, en algunos casos, cuando ciertos módulos del sistema estén listos, se los entregaremos al cliente para su testeo.
 
