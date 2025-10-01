@@ -1,0 +1,16 @@
+@startuml
+actor Usuario
+
+participant "Persona" as Per
+participant "Alumno" as A
+participant "Inscripcion" as I
+participant "Curso" as C
+participant "Asistencia" as As
+
+== Registro de asistencia ==
+Usuario -> As : registrar_asistencia()
+As -> A : verificar_inscripcion()
+A -> Per : obtener_datos()
+As -> C : obtener_detalles()
+
+@enduml

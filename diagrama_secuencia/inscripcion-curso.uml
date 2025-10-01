@@ -1,0 +1,16 @@
+@startuml
+actor Usuario
+
+participant "Persona" as Per
+participant "Alumno" as A
+participant "Inscripcion" as I
+
+
+== Inscripción en curso ==
+Usuario -> I : inscribir_alumno()
+activate I
+I -> A : obtener_datos()
+deactivate I
+A -> Per : obtener_datos()
+
+@enduml

@@ -3,10 +3,6 @@ actor Usuario
 
 participant "Persona" as Per
 participant "Alumno" as A
-participant "Inscripcion" as I
-participant "Curso" as C
-participant "Asistencia" as As
-participant "Pago" as P
 
 == Registro de alumno ==
 Usuario -> A : registrar_alumno()
@@ -19,24 +15,5 @@ else Error en registro
 end
 
 deactivate A
-
-== Inscripción en curso ==
-Usuario -> I : inscribir_alumno()
-activate I
-I -> A : obtener_datos()
-deactivate I
-A -> Per : obtener_datos()
-
-== Registro de asistencia ==
-Usuario -> As : registrar_asistencia()
-As -> A : verificar_inscripcion()
-A -> Per : obtener_datos()
-As -> C : obtener_detalles()
-
-== Registro de pago ==
-Usuario -> P : registrar_pago()
-P -> A : obtener_datos()
-A -> Per : obtener_datos()
-P -> P : generar_recibo()
 
 @enduml
