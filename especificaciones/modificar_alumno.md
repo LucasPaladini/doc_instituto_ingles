@@ -17,8 +17,7 @@ Se permite al Administrador del Sistema modificar un alumno.
 
 ### Flujo Normal
 
-1. El sistema muestra una pantalla con los datos del alumno a modificar ya precargados.  
-   - El usuario puede cancelar en cualquier momento.
+1. El sistema muestra una pantalla con los datos del alumno a modificar ya precargados.
 
 2. El Administrador debe cambiar los datos del alumno clickeando en la celda y reescribiendo ese dato. Luego dará clic en **Aceptar**.
 
@@ -30,7 +29,8 @@ Se permite al Administrador del Sistema modificar un alumno.
 
 ### Flujo Alternativo
 
-- **3.2** El sistema valida los datos y encuentra datos inválidos o incompletos. Muestra un mensaje de error y vuelve al punto 1.
+- **X.1** El usuario puede cancelar en cualquier momento.
+- **3.1** El sistema valida los datos y encuentra datos inválidos o incompletos. Muestra un mensaje de error y vuelve al punto 1.
 
 ## 6. Postcondiciones
 El alumno es modificado en el sistema con la información proporcionada.

@@ -14,8 +14,7 @@ Se permite al Administrador consultar a un alumno.
 
 ### Flujo Normal
 
-1. El sistema muestra una pantalla con los datos de los alumnos ya precargados.  
-   - El usuario puede cancelar en cualquier momento.
+1. El sistema muestra una pantalla con los datos de los alumnos ya precargados.
 
 2. El Administrador puede filtrar a un alumno por **DNI** o por **Apellido**. Luego de ingresar el dato, da clic en **Buscar**.
 
@@ -23,7 +22,8 @@ Se permite al Administrador consultar a un alumno.
 
 ### Flujo Alternativo
 
-- **3.2** El sistema no encuentra ningún registro del alumno y vuelve al paso 1.
+- **X.1** El usuario puede cancelar en cualquier momento.
+- **3.1** El sistema no encuentra ningún registro del alumno y vuelve al paso 1.
 
 ## 6. Postcondiciones
 Un alumno es filtrado con éxito.
