@@ -9,25 +9,27 @@ Permite al Administrador del Sistema añadir un nuevo alumno al sistema. El Admi
 ## 4. Precondiciones
 - El Administrador debe estar autenticado en el sistema.
 - El sistema debe estar funcionando correctamente.
-- Debe hacer clic en "Alumnos" y luego en "Añadir nuevo alumno".
+- Debe seleccionar "Alumnos" y luego en "Añadir nuevo alumno".
 
 ## 5. Flujo de Eventos
 
 ### Flujo Normal
 
-1. El sistema muestra una pantalla con el formulario para ingresar un alumno nuevo.
+1. El administrador debe seleccionar en "añadir nuevo alumno".
 
-2. El Administrador completa el formulario con la información requerida del alumno (nombre, apellidos, fecha de nacimiento, dirección, teléfono, teléfono de emergencia, etc.) y da clic en **Guardar**.
+2. El sistema muestra una pantalla con el formulario para ingresar un alumno nuevo.
 
-3. El sistema valida si los campos y datos son correctos y pide confirmación al usuario.
+3. El Administrador completa el formulario con la información requerida del alumno (nombre, apellidos, fecha de nacimiento, dirección, teléfono, teléfono de emergencia, etc.) y da clic en **Guardar**.
 
-4. El usuario confirma los cambios.
+4. El sistema valida si los campos y datos son correctos y pide confirmación al usuario.
 
-5. El sistema añade un nuevo alumno.
+5. El usuario confirma los cambios.
+
+6. El sistema añade un nuevo alumno.
 
 ### Flujo Alternativo
 - **X.1** El usuario puede cancelar en cualquier momento.
-- **3.1** Si el sistema valida y encuentra datos inválidos o incompletos, muestra un mensaje de error y vuelve al paso 2.
+- **4.1** Si el sistema valida y encuentra datos inválidos o incompletos, muestra un mensaje de error y vuelve al paso 2.
 
 ## 6. Postcondiciones
 Un nuevo alumno es añadido al sistema con la información proporcionada.
