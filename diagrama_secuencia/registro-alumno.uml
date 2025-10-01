@@ -1,0 +1,24 @@
+
+@startuml
+actor Usuario
+
+participant "Persona" as Per
+participant "Alumno" as A
+
+
+== Registro de alumno ==
+
+Usuario -> A : registrar_alumno()
+
+activate A
+alt Registro exitoso
+
+    A --> Usuario : confirmación de registro
+else Error en registro
+    A --> Usuario : mensaje de error
+end
+
+deactivate A
+
+
+@enduml
