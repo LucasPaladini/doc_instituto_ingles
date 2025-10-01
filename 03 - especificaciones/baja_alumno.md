@@ -11,11 +11,13 @@ Se permite al Administrador del Sistema dar de baja un alumno.
 
 ## 4. Precondiciones
 - El Administrador debe estar autenticado en el sistema.
-- Debe hacer clic en "Alumnos" y filtrar por nombre o apellido al alumno que desea buscar.
+- Debe hacer clic en "Alumnos".
 
 ## 5. Flujo de Eventos
 
 ### Flujo Normal
+
+1. El administrador debe filtrar por nombre o apellido al alumno.
 
 1. El sistema muestra una pantalla con los datos de los alumnos ya precargados, que coincidan con el filtrado.  
 
