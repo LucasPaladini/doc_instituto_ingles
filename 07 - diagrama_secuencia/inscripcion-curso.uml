@@ -5,12 +5,17 @@ participant "Persona" as Per
 participant "Alumno" as A
 participant "Inscripcion" as I
 
-
 == Inscripción en curso ==
 Usuario -> I : inscribir_alumno()
 activate I
-I -> A : obtener_datos()
+I -> A : verificar_inscripcion()
+alt Alumno ya inscripto
+    I -> Usuario : mostrar_mensaje("El alumno ya está inscripto")
+else Alumno no inscripto
+    I -> A : obtener_datos()
+    A -> Per : obtener_datos()
+    I -> Usuario : confirmar_inscripcion()
+end
 deactivate I
-A -> Per : obtener_datos()
-
 @enduml
+

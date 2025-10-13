@@ -1,18 +1,21 @@
 @startuml
 actor Usuario
 
-participant "Persona" as Per
 participant "Alumno" as A
 participant "Inscripcion" as I
-participant "Curso" as C
-participant "Asistencia" as As
 participant "Pago" as P
 
-
 == Registro de pago ==
-Usuario -> P : registrar_pago()
-P -> A : obtener_datos()
-A -> Per : obtener_datos()
-P -> P : generar_recibo()
-
+Usuario -> P : registrar_pago(alumno_id)
+P -> I : verificar_inscripcion(alumno_id)
+alt Alumno inscripto
+    I --> P : inscripcion_valida()
+    P -> A : obtener_datos()
+    P -> P : generar_comprobante()
+    P -> Usuario : mostrar_confirmacion("Pago registrado y comprobante emitido")
+else Alumno no inscripto
+    I --> P : inscripcion_invalida()
+    P -> Usuario : mostrar_error("El alumno no está inscripto")
+end
 @enduml
+
