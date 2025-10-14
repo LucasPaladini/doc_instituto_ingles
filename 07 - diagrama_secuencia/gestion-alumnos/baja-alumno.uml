@@ -1,0 +1,15 @@
+@startuml
+actor Usuario
+
+participant "Alumno" as A
+
+== Baja de alumno ==
+Usuario -> A : dar_baja_alumno()
+activate A
+alt Baja exitosa
+    A --> Usuario : confirmación de baja
+else Error en baja
+    A --> Usuario : mensaje de error
+end
+deactivate A
+@enduml

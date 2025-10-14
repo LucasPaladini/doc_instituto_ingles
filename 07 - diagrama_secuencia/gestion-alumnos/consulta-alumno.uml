@@ -1,0 +1,15 @@
+@startuml
+actor Usuario
+
+participant "Alumno" as A
+
+== Consulta de alumno ==
+Usuario -> A : consultar_alumno()
+activate A
+alt Alumno encontrado
+    A --> Usuario : mostrar_datos_alumno
+else Alumno no encontrado
+    A --> Usuario : mensaje "No se encontró el alumno"
+end
+deactivate A
+@enduml

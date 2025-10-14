@@ -1,0 +1,15 @@
+@startuml
+actor Usuario
+
+participant "Alumno" as A
+
+== Modificación de alumno ==
+Usuario -> A : modificar_datos_alumno()
+activate A
+alt Modificación exitosa
+    A --> Usuario : confirmación de actualización
+else Error en modificación
+    A --> Usuario : mensaje de error
+end
+deactivate A
+@enduml
