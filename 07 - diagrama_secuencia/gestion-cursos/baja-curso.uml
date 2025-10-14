@@ -1,0 +1,16 @@
+@startuml
+actor Usuario
+
+participant "Curso" as C
+
+== Baja de curso ==
+Usuario -> C : dar_baja_curso()
+activate C
+alt Baja exitosa
+    C --> Usuario : confirmación de baja
+else Error en baja
+    C --> Usuario : mensaje de error
+end
+deactivate C
+@enduml
+

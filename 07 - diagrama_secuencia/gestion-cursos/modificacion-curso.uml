@@ -1,0 +1,15 @@
+@startuml
+actor Usuario
+
+participant "Curso" as C
+
+== Modificación de curso ==
+Usuario -> C : modificar_curso()
+activate C
+alt Modificación exitosa
+    C -> Usuario : confirmación de actualización
+else Error en modificación
+    C -> Usuario : mensaje de error
+end
+deactivate C
+@enduml
