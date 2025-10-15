@@ -1,0 +1,27 @@
+@startuml
+actor Usuario
+
+participant "Pago" as P
+participant "Inscripcion" as I
+
+== Baja de pago ==
+Usuario -> P : dar_baja_pago(pago_id)
+activate P
+P -> I : verificar_inscripcion(pago_id)
+alt Inscripción válida
+    I --> P : inscripcion_valida()
+    P -> Usuario : solicitar_confirmacion()
+    Usuario -> P : aceptar_solicitud()
+    alt Confirmación aceptada
+        P -> P : marcar_como_inhabilitado()
+        P -> Usuario : mostrar_mensaje("Pago dado de baja correctamente")
+    else Cancelación
+        P -> Usuario : mostrar_mensaje("Acción cancelada por el usuario")
+    end
+else Inscripción no encontrada
+    I --> P : inscripcion_invalida()
+    P -> Usuario : mostrar_error("No se encontró una inscripción asociada al pago")
+end
+deactivate P
+@enduml
+
