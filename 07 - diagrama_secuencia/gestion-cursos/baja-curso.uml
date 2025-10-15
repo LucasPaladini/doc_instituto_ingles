@@ -1,9 +1,9 @@
 @startuml
 actor Administrador
 
-participant "ControladorCurso" as CC
-participant "Catálogo_De_Cursos" as Cat
-participant "Curso" as C
+participant "cd: ControladorCurso" as CC
+participant "cdc: <Singlenton> CatálogoDeCursos" as Cat
+participant "especif[i]: EspecificacionDeCurso" as Esp
 
 == Baja de curso ==
 Administrador -> CC : solicitar_baja_curso(curso_id)
@@ -11,10 +11,14 @@ activate CC
 
 CC -> Cat : buscar_curso(curso_id)
 activate Cat
-Cat -> C : obtener_datos()
-activate C
-C --> Cat : datos del curso
-deactivate C
+
+loop para cada especificación en CatálogoDeCursos
+    Cat -> Esp : getId()
+    activate Esp
+    Esp --> Cat : <id : (String)>
+    deactivate Esp
+end
+
 
 Cat --> CC : curso encontrado
 deactivate Cat

@@ -1,21 +1,39 @@
 @startuml
-actor Usuario
+actor Administrador
 
-participant "Persona" as Per
-participant "Alumno" as A
-participant "Inscripcion" as I
+participant "cd: ControladorCurso" as CC
+participant "cdc: <Singleton> CatálogoDeCursos" as Cat
+participant "especif[i]: EspecificacionDeCurso" as Esp
 
-== Inscripción en curso ==
-Usuario -> I : inscribir_alumno()
-activate I
-I -> A : verificar_inscripcion()
-alt Alumno ya inscripto
-    I -> Usuario : mostrar_mensaje("El alumno ya está inscripto")
-else Alumno no inscripto
-    I -> A : obtener_datos()
-    A -> Per : obtener_datos()
-    I -> Usuario : confirmar_inscripcion()
+== Registro de curso ==
+Administrador -> CC : registrar_curso(datos_curso)
+activate CC
+
+CC -> Cat : buscar_curso(curso_id)
+activate Cat
+
+loop para cada especificación en CatálogoDeCursos
+    Cat -> Esp : getId()
+    activate Esp
+    Esp --> Cat : <id : String>
+    deactivate Esp
 end
-deactivate I
+
+alt Curso ya existente
+    Cat --> CC : curso ya registrado
+    CC --> Administrador : mensaje de error ("curso existente")
+else Curso no encontrado
+    CC -> Esp : crear_especificacion(datos_curso)
+    activate Esp
+    Esp --> CC : especificación creada
+    deactivate Esp
+
+    CC -> Cat : agregar_curso(Esp)
+    Cat --> CC : confirmación de registro
+    CC --> Administrador : curso registrado correctamente
+end
+
+deactivate Cat
+deactivate CC
 @enduml
 

@@ -1,15 +1,32 @@
 @startuml
-actor Usuario
+actor Administrador
 
-participant "Alumno" as A
+participant "ControladorCurso" as CC
+participant "Catálogo_De_Cursos" as Cat
+participant "Curso" as C
 
-== Baja de alumno ==
-Usuario -> A : dar_baja_alumno()
-activate A
-alt Baja exitosa
-    A --> Usuario : confirmación de baja
-else Error en baja
-    A --> Usuario : mensaje de error
+== Baja de curso ==
+Administrador -> CC : solicitar_baja_curso(curso_id)
+activate CC
+
+CC -> Cat : buscar_curso(curso_id)
+activate Cat
+Cat -> C : obtener_datos()
+activate C
+C --> Cat : datos del curso
+deactivate C
+
+Cat --> CC : curso encontrado
+deactivate Cat
+
+alt Curso encontrado
+    CC -> Cat : eliminar_curso(curso_id)
+    Cat --> CC : confirmación de baja
+    CC --> Administrador : confirmación de baja
+else Curso no encontrado / error
+    CC --> Administrador : mensaje de error
 end
-deactivate A
+
+deactivate CC
 @enduml
+
