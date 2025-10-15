@@ -1,0 +1,25 @@
+@startuml
+actor Administrador
+
+participant "Usuario" as U
+participant "Sistema" as S
+
+== Baja de usuario ==
+Administrador -> S : seleccionar_usuario(usuario_id)
+activate S
+S -> U : verificar_existencia(usuario_id)
+alt Usuario encontrado
+    U --> S : usuario_valido()
+    S -> Administrador : solicitar_confirmacion()
+    alt Confirmación aceptada
+        S -> U : marcar_como_inactivo()
+        S -> Administrador : mostrar_mensaje("Usuario dado de baja correctamente")
+    else Cancelación
+        S -> Administrador : mostrar_mensaje("Acción cancelada por el administrador")
+    end
+else Usuario no encontrado
+    U --> S : usuario_invalido()
+    S -> Administrador : mostrar_error("No se encontró el usuario")
+end
+deactivate S
+@enduml
