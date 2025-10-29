@@ -1,21 +1,26 @@
 @startuml
 actor Usuario
 
-participant "Alumno" as A
-participant "Inscripcion" as I
-participant "Pago" as P
+participant "crp: ControladorRegistroDePagos" as P
+participant "ci: ControladorInscripcion" as I
 
 == Registro de pago ==
-Usuario -> P : registrar_pago(alumno_id)
-P -> I : verificar_inscripcion(alumno_id)
-alt Alumno inscripto
-    I --> P : inscripcion_valida()
-    P -> A : obtener_datos()
-    P -> P : generar_comprobante()
-    P -> Usuario : mostrar_confirmacion("Pago registrado y comprobante emitido")
-else Alumno no inscripto
-    I --> P : inscripcion_invalida()
-    P -> Usuario : mostrar_error("El alumno no está inscripto")
+Usuario -> P : registrar_pago(datos_pago)
+activate P
+
+P -> I : verificar_inscripcion(datos_pago)
+activate I
+
+I --> P : <<inscripción válida (boolean)>>
+deactivate I
+
+alt inscripción válida
+    P -> P : crear_pago(datos_pago)
+    P --> Usuario : <<confirmación registro (boolean = true), pago_id>>
+else inscripción no válida
+    P --> Usuario : <<mensaje de error("Ya existe inscripción asociada")>>
 end
+
+deactivate P
 @enduml
 

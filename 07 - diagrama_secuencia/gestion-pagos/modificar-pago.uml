@@ -1,21 +1,29 @@
 @startuml
 actor Usuario
 
-participant "Alumno" as A
-participant "Inscripcion" as I
-participant "Pago" as P
+participant "crp: ControladorRegistroDePagos" as P
+participant "ci: ControladorInscripcion" as I
 
-== Registro de pago ==
-Usuario -> P : registrar_pago(alumno_id)
-P -> I : verificar_inscripcion(alumno_id)
-alt Alumno inscripto
-    I --> P : inscripcion_valida()
-    P -> A : obtener_datos()
-    P -> P : generar_comprobante()
-    P -> Usuario : mostrar_confirmacion("Pago registrado y comprobante emitido")
-else Alumno no inscripto
-    I --> P : inscripcion_invalida()
-    P -> Usuario : mostrar_error("El alumno no está inscripto")
+== Modificación de pago ==
+Usuario -> P : modificar_pago(pago_id, nuevos_datos)
+activate P
+
+P -> I : verificar_inscripcion(pago_id)
+activate I
+
+note right of I
+    Se verifica que el pago tenga una inscripción asociada.
+end note
+
+I --> P : <<inscripción válida (boolean)>>
+deactivate I
+
+alt inscripción válida
+    P -> P : actualizar_datos_pago(pago_id, nuevos_datos)
+    P --> Usuario : <<confirmación modificación (boolean = true)>>
+else inscripción no válida
+    P --> Usuario : <<mensaje de error("No se encontró un pago asociado")>>
 end
-@enduml
 
+deactivate P
+@enduml

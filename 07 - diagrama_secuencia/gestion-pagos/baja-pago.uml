@@ -1,27 +1,40 @@
 @startuml
 actor Usuario
 
-participant "Pago" as P
-participant "Inscripcion" as I
+participant "cp: ControladorPago" as P
+participant "ci: ControladorInscripcion" as I
 
 == Baja de pago ==
-Usuario -> P : dar_baja_pago(pago_id)
+Usuario -> P : solicitar_baja_pago(pago_id)
 activate P
+
 P -> I : verificar_inscripcion(pago_id)
+activate I
+
+note right of I
+    Se busca la inscripción asociada 
+    al pago_id recibido.
+end note
+
 alt Inscripción válida
-    I --> P : inscripcion_valida()
+    I --> P : <<inscripción válida (boolean)>>
+    deactivate I
+
     P -> Usuario : solicitar_confirmacion()
-    Usuario -> P : aceptar_solicitud()
+    Usuario -> P : aceptar_confirmacion()
+
     alt Confirmación aceptada
-        P -> P : marcar_como_inhabilitado()
-        P -> Usuario : mostrar_mensaje("Pago dado de baja correctamente")
-    else Cancelación
-        P -> Usuario : mostrar_mensaje("Acción cancelada por el usuario")
+        P -> P : marcar_como_inhabilitado(pago_id)
+        P --> Usuario : <<confirmación baja (boolean = true)>>
+    else Cancelación por el usuario
+        P --> Usuario : <<mensaje("Acción cancelada por el usuario")>>
     end
-else Inscripción no encontrada
-    I --> P : inscripcion_invalida()
-    P -> Usuario : mostrar_error("No se encontró una inscripción asociada al pago")
+
+else Inscripción no encontrada / inválida
+    I --> P : <<inscripción inválida (boolean)>>
+    deactivate I
+    P --> Usuario : <<mensaje de error("No se encontró una inscripción asociada al pago")>>
 end
+
 deactivate P
 @enduml
-
