@@ -1,32 +1,40 @@
 @startuml
 actor Administrador
 
-participant "ControladorCurso" as CC
-participant "Catálogo_De_Cursos" as Cat
-participant "Curso" as C
+participant "ca: ControladorAlumno" as CA
+participant "cda: <Singleton> CatálogoDeAlumnos" as CatA
+participant "alum[i]: Alumno" as A
 
-== Baja de curso ==
-Administrador -> CC : solicitar_baja_curso(curso_id)
-activate CC
+== Baja de alumno ==
+Administrador -> CA : solicitar_baja_alumno(alumno_id)
+activate CA
 
-CC -> Cat : buscar_curso(curso_id)
-activate Cat
-Cat -> C : obtener_datos()
-activate C
-C --> Cat : datos del curso
-deactivate C
+CA -> CatA : buscar_alumno(alumno_id)
+activate CatA
 
-Cat --> CC : curso encontrado
-deactivate Cat
-
-alt Curso encontrado
-    CC -> Cat : eliminar_curso(curso_id)
-    Cat --> CC : confirmación de baja
-    CC --> Administrador : confirmación de baja
-else Curso no encontrado / error
-    CC --> Administrador : mensaje de error
+loop para cada alumno en CatálogoDeAlumnos
+    note right of CatA
+        Se verifica cada alumno_id
+        comparando con los del catálogo.
+    end note
+    CatA -> A : getId()
+    activate A
+    A --> CatA : <<id : alumno_id>>
+    deactivate A
 end
 
-deactivate CC
-@enduml
+CatA --> CA : <<alumno_id>>
+deactivate CatA
 
+alt Alumno encontrado
+    CA -> CatA : eliminar_alumno(alumno_id)
+    activate CatA
+    CatA --> CA : <<confirmación baja (boolean)>>
+    deactivate CatA
+    CA --> Administrador : <<confirmación baja (boolean)>>
+else Alumno no encontrado / error
+    CA --> Administrador : <<mensaje de error>>
+end
+
+deactivate CA
+@enduml

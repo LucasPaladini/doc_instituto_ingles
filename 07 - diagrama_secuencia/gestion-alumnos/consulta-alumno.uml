@@ -1,15 +1,41 @@
 @startuml
-actor Usuario
+actor Administrador
 
-participant "Alumno" as A
+participant "ca: ControladorAlumno" as CA
+participant "cda: <Singleton> CatálogoDeAlumnos" as CatA
+participant "alum[i]: Alumno" as A
 
 == Consulta de alumno ==
-Usuario -> A : consultar_alumno()
-activate A
-alt Alumno encontrado
-    A --> Usuario : mostrar_datos_alumno
-else Alumno no encontrado
-    A --> Usuario : mensaje "No se encontró el alumno"
+Administrador -> CA : consultar_alumno(alumno_id)
+activate CA
+
+CA -> CatA : buscar_alumno(alumno_id)
+activate CatA
+
+loop para cada alumno en CatálogoDeAlumnos
+    note right of CatA
+        Se verifica cada alumno_id
+        comparando con los del catálogo.
+    end note
+    CatA -> A : getId()
+    activate A
+    A --> CatA : <<id : alumno_id>>
+    deactivate A
 end
-deactivate A
+
+CatA --> CA : <<alumno_id>>
+deactivate CatA
+
+alt Alumno encontrado
+    CA -> CatA : obtener_datos(alumno_id)
+    activate CatA
+    CatA --> CA : <<datos_alumno>>
+    deactivate CatA
+    CA --> Administrador : <<datos_alumno>>
+else Alumno no encontrado / error
+    CA --> Administrador : <<mensaje de error>>
+end
+
+deactivate CA
 @enduml
+

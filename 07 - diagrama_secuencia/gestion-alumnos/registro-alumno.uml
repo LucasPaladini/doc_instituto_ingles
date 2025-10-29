@@ -1,23 +1,42 @@
 @startuml
-actor Usuario
+actor Administrador
 
-participant "Persona" as Per
-participant "Alumno" as A
-
+participant "ca: ControladorAlumno" as CA
+participant "cda: <Singleton> CatálogoDeAlumnos" as CatA
+participant "alum[i]: Alumno" as A
 
 == Registro de alumno ==
+Administrador -> CA : registrar_alumno(alumno_id, datos)
+activate CA
 
-Usuario -> A : registrar_alumno()
+CA -> CatA : buscar_alumno(alumno_id)
+activate CatA
 
-activate A
-alt Registro exitoso
-
-    A --> Usuario : confirmación de registro
-else Error en registro
-    A --> Usuario : mensaje de error
+loop para cada alumno en CatálogoDeAlumnos
+    note right of CatA
+        Se verifica cada alumno_id
+        comparando con los del catálogo
+        para evitar duplicados.
+    end note
+    CatA -> A : getId()
+    activate A
+    A --> CatA : <<id : alumno_id>>
+    deactivate A
 end
 
-deactivate A
+CatA --> CA : <<alumno_encontrado (boolean)>>
+deactivate CatA
 
+alt Alumno no encontrado
+    CA -> CatA : agregar_alumno(alumno_id, datos)
+    activate CatA
+    CatA --> CA : <<confirmación registro (boolean = true), alumno_id>>
+    deactivate CatA
+    CA --> Administrador : <<confirmación registro (boolean = true), alumno_id>>
+else Alumno ya existente
+    CA --> Administrador : <<mensaje de error("El alumno ya está registrado")>>
+end
 
+deactivate CA
 @enduml
+
