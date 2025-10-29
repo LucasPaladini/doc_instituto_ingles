@@ -3,37 +3,27 @@ actor Administrador
 
 participant "cd: ControladorCurso" as CC
 participant "cdc: <Singleton> CatálogoDeCursos" as Cat
-participant "especif[i]: EspecificacionDeCurso" as Esp
+participant "especif: EspecificaciónDeCurso" as Esp
 
 == Registro de curso ==
 Administrador -> CC : registrar_curso(datos_curso)
 activate CC
 
-CC -> Cat : buscar_curso(curso_id)
+CC -> Esp : crear_especificacion(datos_curso)
+activate Esp
+Esp --> CC : <<nueva EspecificaciónDeCurso>>
+deactivate Esp
+
+CC -> Cat : agregar_curso(Esp)
 activate Cat
-
-loop para cada especificación en CatálogoDeCursos
-    Cat -> Esp : getId()
-    activate Esp
-    Esp --> Cat : <id : String>
-    deactivate Esp
-end
-
-alt Curso ya existente
-    Cat --> CC : curso ya registrado
-    CC --> Administrador : mensaje de error ("curso existente")
-else Curso no encontrado
-    CC -> Esp : crear_especificacion(datos_curso)
-    activate Esp
-    Esp --> CC : especificación creada
-    deactivate Esp
-
-    CC -> Cat : agregar_curso(Esp)
-    Cat --> CC : confirmación de registro
-    CC --> Administrador : curso registrado correctamente
-end
-
+Cat --> CC : <<confirmación registro (boolean), curso_id>>
 deactivate Cat
+
+alt Registro exitoso
+    CC --> Administrador : <<curso registrado con éxito (curso_id)>>
+else Error en el registro
+    CC --> Administrador : <<mensaje de error>>
+end
+
 deactivate CC
 @enduml
-

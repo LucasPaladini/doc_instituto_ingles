@@ -3,7 +3,7 @@ actor Administrador
 
 participant "cd: ControladorCurso" as CC
 participant "cdc: <Singlenton> CatálogoDeCursos" as Cat
-participant "especif[i]: EspecificacionDeCurso" as Esp
+participant "especif[i]: EspecificaciónDeCurso" as Esp
 
 == Baja de curso ==
 Administrador -> CC : solicitar_baja_curso(curso_id)
@@ -13,24 +13,28 @@ CC -> Cat : buscar_curso(curso_id)
 activate Cat
 
 loop para cada especificación en CatálogoDeCursos
+    note right of Cat
+        Se verifica cada curso_id 
+        comparando con los del catalogo
+    end note
     Cat -> Esp : getId()
     activate Esp
     Esp --> Cat : <id : (String)>
     deactivate Esp
 end
 
-
-Cat --> CC : curso encontrado
+Cat --> CC : <<curso_id>>
 deactivate Cat
 
 alt Curso encontrado
     CC -> Cat : eliminar_curso(curso_id)
-    Cat --> CC : confirmación de baja
-    CC --> Administrador : confirmación de baja
+    activate Cat
+    Cat --> CC : <<confirmación baja (boolean)>>
+    deactivate Cat
+    CC --> Administrador : <<confirmación baja (boolean)>>
 else Curso no encontrado / error
-    CC --> Administrador : mensaje de error
+    CC --> Administrador : <<mensaje de error>>
 end
 
 deactivate CC
 @enduml
-

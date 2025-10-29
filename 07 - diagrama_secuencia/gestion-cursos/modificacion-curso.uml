@@ -1,15 +1,40 @@
 @startuml
-actor Usuario
+actor Administrador
 
-participant "Curso" as C
+participant "cd: ControladorCurso" as CC
+participant "cdc: <Singleton> CatálogoDeCursos" as Cat
+participant "especif[i]: EspecificaciónDeCurso" as Esp
 
 == Modificación de curso ==
-Usuario -> C : modificar_curso()
-activate C
-alt Modificación exitosa
-    C -> Usuario : confirmación de actualización
-else Error en modificación
-    C -> Usuario : mensaje de error
+Administrador -> CC : modificar_curso(curso_id)
+activate CC
+
+CC -> Cat : buscar_curso(curso_id)
+activate Cat
+
+loop para cada especificación en CatálogoDeCursos
+    note right of Cat
+        Se recorre el catálogo comparando 
+        el curso_id recibido con los existentes.
+    end note
+    Cat -> Esp : getId()
+    activate Esp
+    Esp --> Cat : <id : (String)>
+    deactivate Esp
 end
-deactivate C
+
+Cat --> CC : <<curso_id>>
+deactivate Cat
+
+alt Curso encontrado
+    CC -> Esp : actualizar_datos(nuevos_datos)
+    activate Esp
+    Esp --> CC : <<confirmación modificación (boolean)>>
+    deactivate Esp
+    CC --> Administrador : <<confirmación modificación (boolean)>>
+else Curso no encontrado / error
+    CC --> Administrador : <<mensaje de error>>
+end
+
+deactivate CC
 @enduml
