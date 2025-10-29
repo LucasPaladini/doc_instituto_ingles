@@ -1,25 +1,41 @@
 @startuml
 actor Administrador
 
-participant "Usuario" as U
-participant "Sistema" as S
+participant "cu: ControladorUsuario" as CU
+participant "cdu: <Singleton> CatálogoDeUsuarios" as CatU
+participant "usr[i]: Usuario" as U
 
 == Baja de usuario ==
-Administrador -> S : seleccionar_usuario(usuario_id)
-activate S
-S -> U : verificar_existencia(usuario_id)
-alt Usuario encontrado
-    U --> S : usuario_valido()
-    S -> Administrador : solicitar_confirmacion()
-    alt Confirmación aceptada
-        S -> U : marcar_como_inactivo()
-        S -> Administrador : mostrar_mensaje("Usuario dado de baja correctamente")
-    else Cancelación
-        S -> Administrador : mostrar_mensaje("Acción cancelada por el administrador")
-    end
-else Usuario no encontrado
-    U --> S : usuario_invalido()
-    S -> Administrador : mostrar_error("No se encontró el usuario")
+Administrador -> CU : solicitar_baja_usuario(usuario_id)
+activate CU
+
+CU -> CatU : buscar_usuario(usuario_id)
+activate CatU
+
+loop para cada usuario en CatálogoDeUsuarios
+    note right of CatU
+        Se verifica cada usuario_id
+        comparando con los del catálogo.
+    end note
+    CatU -> U : getId()
+    activate U
+    U --> CatU : <<id : usuario_id>>
+    deactivate U
 end
-deactivate S
+
+CatU --> CU : <<usuario_id>>
+deactivate CatU
+
+alt Usuario encontrado
+    CU -> CatU : eliminar_usuario(usuario_id)
+    activate CatU
+    CatU --> CU : <<confirmación baja (boolean)>>
+    deactivate CatU
+    CU --> Administrador : <<confirmación baja (boolean)>>
+else Usuario no encontrado / error
+    CU --> Administrador : <<mensaje de error>>
+end
+
+deactivate CU
 @enduml
+

@@ -1,25 +1,41 @@
 @startuml
 actor Administrador
 
-participant "Usuario" as U
-participant "Sistema" as S
+participant "cu: ControladorUsuario" as CU
+participant "cdu: <Singleton> CatálogoDeUsuarios" as CatU
+participant "usr[i]: Usuario" as U
 
-== Baja de usuario ==
-Administrador -> S : seleccionar_usuario(usuario_id)
-activate S
-S -> U : verificar_existencia(usuario_id)
-alt Usuario encontrado
-    U --> S : usuario_valido()
-    S -> Administrador : solicitar_confirmacion()
-    alt Confirmación aceptada
-        S -> U : marcar_como_inactivo()
-        S -> Administrador : mostrar_mensaje("Usuario dado de baja correctamente")
-    else Cancelación
-        S -> Administrador : mostrar_mensaje("Acción cancelada por el administrador")
-    end
-else Usuario no encontrado
-    U --> S : usuario_invalido()
-    S -> Administrador : mostrar_error("No se encontró el usuario")
+== Registro de usuario ==
+Administrador -> CU : registrar_usuario(usuario_id, datos)
+activate CU
+
+CU -> CatU : buscar_usuario(usuario_id)
+activate CatU
+
+loop para cada usuario en CatálogoDeUsuarios
+    note right of CatU
+        Se verifica si el usuario_id ya existe
+        comparando con los del catálogo
+        para evitar duplicados.
+    end note
+    CatU -> U : getId()
+    activate U
+    U --> CatU : <<id : usuario_id>>
+    deactivate U
 end
-deactivate S
+
+CatU --> CU : <<usuario_encontrado (boolean)>>
+deactivate CatU
+
+alt Usuario no encontrado
+    CU -> CatU : agregar_usuario(usuario_id, datos)
+    activate CatU
+    CatU --> CU : <<confirmación registro (boolean = true), usuario_id>>
+    deactivate CatU
+    CU --> Administrador : <<confirmación registro (boolean = true), usuario_id>>
+else Usuario ya existente
+    CU --> Administrador : <<mensaje de error("El usuario ya está registrado")>>
+end
+
+deactivate CU
 @enduml
