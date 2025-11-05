@@ -19,7 +19,7 @@ loop para cada alumno en CatálogoDeAlumnos
     activate A
     A --> CatA : <<id : alumno_id>>
       note right of CatA
-        Si id = alumno_id  
+        Si id = alumno_id
         alumno ya registrado  
         cortar iteración
     end note
@@ -35,7 +35,7 @@ alt Alumno no encontrado
     Al --> CA : <<alumno creado>>
     deactivate Al
 
-    CA -> CatA : agregar_alumno(Al)
+    CA -> CatA : agregar_alumno(datos)
     activate CatA
     CatA --> CA : <<confirmación registro (boolean)>>
     deactivate CatA
