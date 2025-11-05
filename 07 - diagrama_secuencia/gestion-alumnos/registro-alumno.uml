@@ -4,6 +4,7 @@ actor Administrador
 participant "ca: ControladorAlumno" as CA
 participant "cda: <Singleton> CatálogoDeAlumnos" as CatA
 participant "alum[i]: Alumno" as A
+participant "alumno: Alumno" as Al
 
 == Registro de alumno ==
 Administrador -> CA : registrar_alumno(alumno_id, datos)
@@ -13,14 +14,15 @@ CA -> CatA : buscar_alumno(alumno_id)
 activate CatA
 
 loop para cada alumno en CatálogoDeAlumnos
-    note right of CatA
-        Se verifica cada alumno_id
-        comparando con los del catálogo
-        para evitar duplicados.
-    end note
+  
     CatA -> A : getId()
     activate A
     A --> CatA : <<id : alumno_id>>
+      note right of CatA
+        Si id = alumno_id  
+        alumno ya registrado  
+        cortar iteración
+    end note
     deactivate A
 end
 
@@ -28,13 +30,19 @@ CatA --> CA : <<alumno_encontrado (boolean)>>
 deactivate CatA
 
 alt Alumno no encontrado
-    CA -> CatA : agregar_alumno(alumno_id, datos)
+    CA -> Al : crear_alumno(datos)
+    activate Al
+    Al --> CA : <<alumno creado>>
+    deactivate Al
+
+    CA -> CatA : agregar_alumno(Al)
     activate CatA
-    CatA --> CA : <<confirmación registro (boolean = true), alumno_id>>
+    CatA --> CA : <<confirmación registro (boolean)>>
     deactivate CatA
-    CA --> Administrador : <<confirmación registro (boolean = true), alumno_id>>
+
+    CA --> Administrador : <<confirmación registro (boolean)>>
 else Alumno ya existente
-    CA --> Administrador : <<mensaje de error("El alumno ya está registrado")>>
+    CA --> Administrador : <<mensaje de error>>
 end
 
 deactivate CA

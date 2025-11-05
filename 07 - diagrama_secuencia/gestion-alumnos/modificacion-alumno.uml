@@ -4,33 +4,36 @@ actor Administrador
 participant "ca: ControladorAlumno" as CA
 participant "cda: <Singleton> CatálogoDeAlumnos" as CatA
 participant "alum[i]: Alumno" as A
+participant "alumno: Alumno" as Al
 
 == Modificación de alumno ==
-Administrador -> CA : modificar_alumno(alumno_id)
+Administrador -> CA : modificar_alumno(alumno_id, nuevos_datos)
 activate CA
 
 CA -> CatA : buscar_alumno(alumno_id)
 activate CatA
 
 loop para cada alumno en CatálogoDeAlumnos
-    note right of CatA
-        Se verifica cada alumno_id
-        comparando con los del catálogo.
-    end note
+  
     CatA -> A : getId()
     activate A
     A --> CatA : <<id : alumno_id>>
+      note right of CatA
+        Si id = alumno_id  
+        alumno = alum[i]  
+        cortar iteración
+    end note
     deactivate A
 end
 
-CatA --> CA : <<alumno_id>>
+CatA --> CA : <<alumno:Alumno>>
 deactivate CatA
 
 alt Alumno encontrado
-    CA -> CatA : actualizar_datos(alumno_id, nuevos_datos)
-    activate CatA
-    CatA --> CA : <<confirmación modificación (boolean)>>
-    deactivate CatA
+    CA -> Al : actualizar_datos(nuevos_datos)
+    activate Al
+    Al --> CA : <<confirmación modificación (boolean)>>
+    deactivate Al
     CA --> Administrador : <<confirmación modificación (boolean)>>
 else Alumno no encontrado / error
     CA --> Administrador : <<mensaje de error>>
