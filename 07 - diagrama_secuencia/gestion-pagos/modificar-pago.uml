@@ -1,29 +1,42 @@
 @startuml
 actor Usuario
 
-participant "crp: ControladorRegistroDePagos" as P
-participant "ci: ControladorInscripcion" as I
+participant "cp: ControladorPago" as P
+participant "cpg: <Singleton> CatálogoDePagos" as CatP
+participant "pago[i]: Pago" as Pg
 
 == Modificación de pago ==
 Usuario -> P : modificar_pago(pago_id, nuevos_datos)
 activate P
 
-P -> I : verificar_inscripcion(pago_id)
-activate I
+P -> CatP : buscar_pago(pago_id)
+activate CatP
 
-note right of I
-    Se verifica que el pago tenga una inscripción asociada.
-end note
+loop para cada pago en CatálogoDePagos
+    CatP -> Pg : getId()
+    activate Pg
+    Pg --> CatP : <<id : pago_id>>
+      note right of CatP
+        Si id = pago_id  
+        pago = pago[i]  
+        cortar iteración
+      end note
+    deactivate Pg
+end
 
-I --> P : <<inscripción válida (boolean)>>
-deactivate I
+CatP --> P : <<pago:Pago>>
+deactivate CatP
 
-alt inscripción válida
-    P -> P : actualizar_datos_pago(pago_id, nuevos_datos)
-    P --> Usuario : <<confirmación modificación (boolean = true)>>
-else inscripción no válida
-    P --> Usuario : <<mensaje de error("No se encontró un pago asociado")>>
+alt Pago encontrado
+    P -> Pg : actualizar_datos(nuevos_datos)
+    activate Pg
+    Pg --> P : <<confirmación modificación (boolean)>>
+    deactivate Pg
+    P --> Usuario : <<confirmación modificación (boolean)>>
+else Pago no encontrado / error
+    P --> Usuario : <<mensaje de error("No se encontró el pago a modificar")>>
 end
 
 deactivate P
 @enduml
+
