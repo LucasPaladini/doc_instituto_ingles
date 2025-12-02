@@ -24,7 +24,7 @@ También aclaré que es posible que más adelante necesitemos hacer otras entrev
 ### ¿Todos los usuarios tendrán los mismos permisos?
 **Respuesta:** Los administrativos sí.
 
-## ¿Qué datos piden cuando se inscribe un alumno?
+### ¿Qué datos piden cuando se inscribe un alumno?
 
 ### Alumno:
 - Nombre  
@@ -55,7 +55,7 @@ También aclaré que es posible que más adelante necesitemos hacer otras entrev
 - Pago del 50% de la inscripción  
 
 ### ¿Cuántos cursos tienen?
-**Respuesta:** Aproximadamente 15 (Kinder, Preparatorio, Kids, etc.).
+**Respuesta:** Aproximadamente 15 (Kinder, Preparatorio, Kids, Libre, etc.).
 
 ### ¿Cómo dividen los cursos?
 **Respuesta:** Por salón, horarios y días (dependiendo del caso).
@@ -73,8 +73,8 @@ También aclaré que es posible que más adelante necesitemos hacer otras entrev
 - No todos van con factura  
 - Idealmente del 1 al 5 se carga el valor del mes  
 - Transferencias las atiende la contadora  
-- Guardan comprobantes en una carpeta  
-- A veces se pierden fichas de pago  
+- Guardan los comprobantes en una carpeta  
+- Usualmente se pierden fichas de pago  
 - Tienen otra ficha con el balance del día  
 
 ### ¿Qué medios de pago aceptan?
