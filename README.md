@@ -40,6 +40,6 @@ El proyecto **SIFA (Software Intuitivo de Fácil Aplicación)** fue desarrollado
 
 El sistema se permite visualizar y probar su funcionamiento, accediento al siguiente enlace:
 
-🔗 [https://lucaspaladini.github.io/app-instituto-ingles/](https://lucaspaladini.github.io/app-instituto-ingles/)
+🔗 [https://github.com/LucasPaladini/app-instituto-ingles](https://github.com/LucasPaladini/app-instituto-ingles)
 
 ---
