@@ -18,8 +18,8 @@ class Alumno {
 }
 
 class Inscripcion {
-  +alumno: persona
-  +curso: curso
+  +alumno: Persona
+  +curso: Curso
   +fecha_inscripcion: date
   +inscribir_alumno()
   +cancelar_inscripcion()
@@ -27,8 +27,8 @@ class Inscripcion {
 }
 
 class Asistencia {
-  +alumno: persona
-  +curso: curso
+  +alumno: Persona
+  +curso: Curso
   +fecha: date
   +presente: bool
   +registrar_asistencia()
@@ -37,7 +37,7 @@ class Asistencia {
 }
 
 class Curso {
-  +nombre: st|r
+  +nombre: str
   +salon: str
   +horario: str
   +agregar_curso()
@@ -46,7 +46,7 @@ class Curso {
 }
 
 class Pago {
-  +alumno: persona
+  +alumno: Persona
   +valor: int
   +fecha_pago: date
   +medio_pago: str
