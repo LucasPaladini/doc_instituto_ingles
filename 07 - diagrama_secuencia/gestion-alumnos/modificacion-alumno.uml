@@ -1,15 +1,44 @@
 @startuml
-actor Usuario
+actor Administrador
 
-participant "Alumno" as A
+participant "ca: ControladorAlumno" as CA
+participant "cda: <Singleton> CatálogoDeAlumnos" as CatA
+participant "alum[i]: Alumno" as A
+participant "alumno: Alumno" as Al
 
 == Modificación de alumno ==
-Usuario -> A : modificar_datos_alumno()
-activate A
-alt Modificación exitosa
-    A --> Usuario : confirmación de actualización
-else Error en modificación
-    A --> Usuario : mensaje de error
+Administrador -> CA : modificar_alumno(alumno_id, nuevos_datos)
+activate CA
+
+CA -> CatA : buscar_alumno(alumno_id)
+activate CatA
+
+loop para cada alumno en CatálogoDeAlumnos
+  
+    CatA -> A : getId()
+    activate A
+    A --> CatA : <<id : alumno_id>>
+      note right of CatA
+        Si id = alumno_id  
+        alumno = alum[i]  
+        cortar iteración
+    end note
+    deactivate A
 end
-deactivate A
+
+CatA --> CA : <<alumno:Alumno>>
+deactivate CatA
+
+alt Alumno encontrado
+    CA -> Al : actualizar_datos(nuevos_datos)
+    activate Al
+    Al --> CA : <<confirmación modificación (boolean)>>
+    deactivate Al
+    CA --> Administrador : <<confirmación modificación (boolean)>>
+else Alumno no encontrado / error
+    CA --> Administrador : <<mensaje de error>>
+end
+
+deactivate CA
 @enduml
+

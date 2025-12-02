@@ -1,36 +1,40 @@
 @startuml
 actor Administrador
 
-participant "cd: ControladorCurso" as CC
-participant "cdc: <Singlenton> CatálogoDeCursos" as Cat
-participant "especif[i]: EspecificaciónDeCurso" as Esp
+participant "cc: ControladorCurso" as CC
+participant "cdc: <Singleton> CatálogoDeCursos" as CatC
+participant "esp[i]: EspecificaciónDeCurso" as E
+participant "curso: Curso" as Curso
+
 
 == Baja de curso ==
 Administrador -> CC : solicitar_baja_curso(curso_id)
 activate CC
 
-CC -> Cat : buscar_curso(curso_id)
-activate Cat
+CC -> CatC : buscar_curso(curso_id)
+activate CatC
 
-loop para cada especificación en CatálogoDeCursos
-    note right of Cat
-        Se verifica cada curso_id 
-        comparando con los del catalogo
-    end note
-    Cat -> Esp : getId()
-    activate Esp
-    Esp --> Cat : <id : (String)>
-    deactivate Esp
+loop para cada curso en CatálogoDeCursos
+  
+    CatC -> E : getId()
+    activate E
+    E --> CatC : <<id : curso_id>>
+      note right of CatC
+        Si id = curso_id
+        curso = esp[i]
+        cortar iteración
+      end note
+    deactivate E
 end
 
-Cat --> CC : <<curso_id>>
-deactivate Cat
+CatC --> CC : <<curso:Curso>>
+deactivate CatC
 
 alt Curso encontrado
-    CC -> Cat : eliminar_curso(curso_id)
-    activate Cat
-    Cat --> CC : <<confirmación baja (boolean)>>
-    deactivate Cat
+    CC -> Curso : eliminar_curso()
+    activate Curso
+    Curso --> CC : <<confirmación baja (boolean)>>
+    deactivate Curso
     CC --> Administrador : <<confirmación baja (boolean)>>
 else Curso no encontrado / error
     CC --> Administrador : <<mensaje de error>>
@@ -38,3 +42,4 @@ end
 
 deactivate CC
 @enduml
+

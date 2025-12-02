@@ -1,25 +1,43 @@
 @startuml
 actor Usuario
 
-participant "crp: ControladorRegistroDePagos" as P
-participant "ci: ControladorInscripcion" as I
+participant "cp: ControladorPago" as P
+participant "cpi: <Singleton> CatálogoDePagos" as CatP
+participant "pago[i]: Pago" as Pg
+participant "pago: Pago" as Pago
 
 == Consulta de pago ==
 Usuario -> P : consultar_pago(pago_id)
 activate P
 
-P -> I : verificar_inscripcion(pago_id)
-activate I
+P -> CatP : buscar_pago(pago_id)
+activate CatP
 
-I --> P : <<inscripción válida (boolean)>>
-deactivate I
+loop para cada pago en CatálogoDePagos
+    CatP -> Pg : getId()
+    activate Pg
+    Pg --> CatP : <<id : pago_id>>
+      note right of CatP
+        Si id = pago_id  
+        pago = pago[i]  
+        cortar iteración
+      end note
+    deactivate Pg
+end
 
-alt inscripción válida
-    P -> P : buscar_datos_pago(pago_id)
-    P --> Usuario : <<datos del pago (monto, fecha, curso, estado)>>
-else inscripción no válida
-    P --> Usuario : <<mensaje de error("No se encontró un pago asociado")>>
+CatP --> P : <<pago: Pago>>
+deactivate CatP
+
+alt Pago encontrado
+    P -> Pago : obtener_detalles()
+    activate Pago
+    Pago --> P : <<datos del pago>>
+    deactivate Pago
+    P --> Usuario : <<datos del pago>>
+else Pago no encontrado / error
+    P --> Usuario : <<mensaje de error("No se encontró el pago solicitado")>>
 end
 
 deactivate P
 @enduml
+

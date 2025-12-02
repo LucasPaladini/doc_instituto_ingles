@@ -4,37 +4,46 @@ actor Administrador
 participant "cd: ControladorCurso" as CC
 participant "cdc: <Singleton> CatálogoDeCursos" as Cat
 participant "especif[i]: EspecificaciónDeCurso" as Esp
+participant "curso: Curso" as Curso
 
 == Modificación de curso ==
-Administrador -> CC : modificar_curso(curso_id)
+Administrador -> CC : modificar_curso(curso_id, nuevos_datos)
 activate CC
 
 CC -> Cat : buscar_curso(curso_id)
 activate Cat
 
 loop para cada especificación en CatálogoDeCursos
-    note right of Cat
-        Se recorre el catálogo comparando 
-        el curso_id recibido con los existentes.
-    end note
     Cat -> Esp : getId()
     activate Esp
-    Esp --> Cat : <id : (String)>
+    Esp --> Cat : <<id : (String)>>
+      note right of Cat
+        Si id = curso_id  
+        curso = especif[i]  
+        cortar iteración
+      end note
     deactivate Esp
 end
 
-Cat --> CC : <<curso_id>>
+Cat --> CC : <<curso:Curso>>
 deactivate Cat
 
 alt Curso encontrado
-    CC -> Esp : actualizar_datos(nuevos_datos)
-    activate Esp
-    Esp --> CC : <<confirmación modificación (boolean)>>
-    deactivate Esp
-    CC --> Administrador : <<confirmación modificación (boolean)>>
+    CC -> Curso : actualizar_datos(nuevos_datos)
+    activate Curso
+    Curso --> CC : <<confirmación modificación (boolean)>>
+    deactivate Curso
+
+    alt Modificación exitosa
+        CC --> Administrador : <<curso modificado con éxito>>
+    else Error en la modificación
+        CC --> Administrador : <<mensaje de error>>
+    end
+
 else Curso no encontrado / error
     CC --> Administrador : <<mensaje de error>>
 end
 
 deactivate CC
 @enduml
+

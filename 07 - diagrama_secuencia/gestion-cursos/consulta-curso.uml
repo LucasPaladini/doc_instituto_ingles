@@ -1,36 +1,44 @@
 @startuml
 actor Administrador
 
-participant "cd: ControladorCurso" as CC
-participant "cdc: <Singleton> CatálogoDeCursos" as Cat
-participant "especif[i]: EspecificaciónDeCurso" as Esp
+participant "cc: ControladorCurso" as CC
+participant "cdc: <Singleton> CatálogoDeCursos" as CatC
+participant "esp[i]: EspecificaciónDeCurso" as E
+participant "curso: Curso" as Curso
 
 == Consulta de curso ==
 Administrador -> CC : consultar_curso(curso_id)
 activate CC
 
-CC -> Cat : buscar_curso(curso_id)
-activate Cat
+CC -> CatC : buscar_curso(curso_id)
+activate CatC
 
-loop para cada especificación en CatálogoDeCursos
-    note right of Cat
-        Se recorre el catálogo comparando 
-        el curso_id solicitado con los existentes.
-    end note
-    Cat -> Esp : getId()
-    activate Esp
-    Esp --> Cat : <id : (String)>
-    deactivate Esp
+loop para cada curso en CatálogoDeCursos
+    CatC -> E : getId()
+    activate E
+    E --> CatC : <<id : curso_id>>
+      note right of CatC
+        Si id = curso_id
+        curso = esp[i]
+        cortar iteración
+      end note
+    deactivate E
 end
 
-Cat --> CC : <<curso_id>> 
-deactivate Cat
+CatC --> CC : <<curso:Curso>>
+deactivate CatC
 
 alt Curso encontrado
-    CC --> Administrador : <<datos del curso (nombre, descripción, docente, etc.)>>
+    CC -> Curso : obtener_datos()
+    activate Curso
+    Curso --> CC : <<datos>>
+    deactivate Curso
+
+    CC --> Administrador : <<datos del curso>>
 else Curso no encontrado / error
     CC --> Administrador : <<mensaje de error>>
 end
 
 deactivate CC
 @enduml
+

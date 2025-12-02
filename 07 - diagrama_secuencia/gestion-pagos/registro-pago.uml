@@ -1,24 +1,52 @@
 @startuml
 actor Usuario
 
-participant "crp: ControladorRegistroDePagos" as P
-participant "ci: ControladorInscripcion" as I
+participant "cp: ControladorPago" as P
+participant "cpg: <Singleton> CatálogoDePagos" as CatP
+participant "pago[i]: Pago" as Pg
+participant "pago: Pago" as Pago
 
 == Registro de pago ==
 Usuario -> P : registrar_pago(datos_pago)
 activate P
 
-P -> I : verificar_inscripcion(datos_pago)
-activate I
+P -> CatP : verificar_pago(datos_pago)
+activate CatP
 
-I --> P : <<inscripción válida (boolean)>>
-deactivate I
+loop para cada pago en CatálogoDePagos
+    CatP -> Pg : getId()
+    activate Pg
+    Pg --> CatP : <<id : pago_id>>
+      note right of CatP
+        Si id = pago_id  
+        pago = pago[i]  
+        cortar iteración
+      end note
+    deactivate Pg
+end
 
-alt inscripción válida
-    P -> P : crear_pago(datos_pago)
-    P --> Usuario : <<confirmación registro (boolean = true), pago_id>>
-else inscripción no válida
-    P --> Usuario : <<mensaje de error("Ya existe inscripción asociada")>>
+CatP --> P : <<pago:Pago>>
+deactivate CatP
+
+alt Pago no registrado previamente
+    P -> Pago : crear_pago(datos_pago)
+    activate Pago
+    Pago --> P : <<confirmación modificación>>
+    deactivate Pago
+
+    P -> CatP : agregar_pago(Pago)
+    activate CatP
+    CatP --> P : <<confirmación registro (boolean)>>
+    deactivate CatP
+
+    alt Registro exitoso
+        P --> Usuario : <<pago registrado con éxito (pago_id)>>
+    else Error en el registro
+        P --> Usuario : <<mensaje de error("No se pudo registrar el pago")>>
+    end
+
+else Pago ya existente
+    P --> Usuario : <<mensaje("El pago ya se encuentra registrado")>>
 end
 
 deactivate P
