@@ -2,29 +2,21 @@
 ## Gestión de Usuarios
 
 - **Usuarios del sistema:** Dueña, secretaria y profesores (multiusuario).
-- **Nivel de acceso:** Dueña y secretaria todos los permisos, profesores solamente añadir y eliminar asistencia.
+- **Nivel de acceso:** Dueña y secretaria todos los permisos, alumnos solo ver su libreta.
 
 ---
 
 ## Gestión de Alumnos
 
-- **Datos solicitados al alumno:** Nombre, apellido, dni, fecha de nacimiento, teléfono, dirección, teléfono de emergencia.
-- **Datos del padre/madre/tutor:** Nombre, apellido, teléfono.
+- **Datos solicitados al alumno:** Nombre, apellido, dni, fecha de nacimiento y dirección
 - **Evaluación del nivel de inglés:** Prueba de nivelación, entrevista, presentación de libreta del otro instituto.
 
 ---
 
-## Gestión de Asistencia
+## Gestión de Cursos
 
-- **Registro:** Se cargará en el software.
-
----
-
-## Gestión de Cursos e Inscripción
-
-- **Inscripción:** Ficha en papel + pago parcial.
 - **Cursos ofrecidos:** Kinder, preparatorio, kids (total de 15).
-- **Organización:** Por salón, horarios y días. ABM de cursos.
+- **Organización:** ABM de cursos.
 - **Asignación:** Según edad y nivel del alumno.
 
 ---
