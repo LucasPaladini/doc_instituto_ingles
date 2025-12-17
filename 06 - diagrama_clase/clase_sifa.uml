@@ -26,6 +26,15 @@ class Inscripcion {
   +marcar_inactivo_alumno()
 }
 
+class Curso {
+  +nombre: str
+  +salon: str
+  +horario: str
+  +agregar_curso()
+  +modificar_curso()
+  +eliminar_curso()
+}
+
 class Asistencia {
   +alumno: Persona
   +curso: Curso
@@ -36,14 +45,6 @@ class Asistencia {
   +obtener_reporte()
 }
 
-class Curso {
-  +nombre: str
-  +salon: str
-  +horario: str
-  +agregar_curso()
-  +modificar_curso()
-  +eliminar_curso()
-}
 
 class Pago {
   +alumno: Persona
@@ -56,19 +57,12 @@ class Pago {
   +agregar_medio_pago()
 }
 
-class Profesor {
-  +modificar_asistencia()
-  +agregar_profesor()
- 
-}
 
 Persona "1" <|-- Alumno
-Persona "1" <|-- Profesor
 Alumno "1" o-- "1..*" Inscripcion
 Inscripcion "1" o-- "1" Curso
 Asistencia "1" o-- "1" Alumno
 Asistencia "1" o-- "1" Curso
 Pago "1" <|-- Alumno
-Profesor "1..*" -- "1" Asistencia
 
 @enduml
